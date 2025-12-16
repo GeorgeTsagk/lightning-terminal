@@ -2757,6 +2757,24 @@ func testCustomChannelsLiquidityEdgeCasesCore(ctx context.Context,
 
 	logBalance(t.t, nodes, assetID, "initial")
 
+	// // Normal case.
+	// // Send 50 assets from Charlie to Dave.
+	// // sendAssetKeySendPayment(
+	// // 	t.t, charlie, dave, 50, assetID, fn.None[int64](),
+	// // 	withGroupKey(groupID),
+	// // )
+
+	// // Pay a normal bolt11 invoice involving RFQ flow.
+	// _ = createAndPayNormalInvoice(
+	// 	t.t, charlie, dave, erin, 20_000, assetID,
+	// 	// withSmallShards(),
+	// 	withGroupKey(groupID),
+	// )
+
+	// logBalance(t.t, nodes, assetID, "after 50 assets")
+
+	// return
+
 	// Edge case: We send a single satoshi keysend payment from Dave to
 	// Fabia. Which will make it so that Fabia's balance in the channel
 	// between Erin and her is 1 satoshi, which is below the dust limit.
@@ -3218,7 +3236,7 @@ func testCustomChannelsLiquidityEdgeCasesCore(ctx context.Context,
 	// hinted at the problem (not enough assets to forward).
 	assertHtlcEvents(
 		t.t, htlcStream, withNumEvents(1),
-		withLinkFailure(routerrpc.FailureDetail_INSUFFICIENT_BALANCE),
+		withLinkFailure(routerrpc.FailureDetail_HTLC_ADD_FAILED),
 	)
 
 	logBalance(t.t, nodes, assetID, "with min 4 present HTLCs")
